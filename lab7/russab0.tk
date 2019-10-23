@@ -1,0 +1,56 @@
+server {
+  if ($host = www.russab0.tk) {
+      return 301 https://$host$request_uri;
+  }
+
+  listen 80;
+  listen [::]:80;
+
+  server_name www.russab0.tk;
+  return 404; 
+}
+
+
+server {
+  if ($host = russab0.tk) {
+      return 301 https://$host$request_uri;
+  }
+
+  listen 80;
+  listen [::]:80;
+
+  server_name russab0.tk;
+  return 404;
+}
+
+
+server {
+  server_name www.russab0.tk;
+
+  #location ~ \.(ico|png|jpg) {
+  #  root var/www/media;
+  #}
+
+  location / {
+    proxy_pass http://localhost:5000;
+  }
+
+  listen [::]:443 ssl ipv6only=on; # managed by Certbot
+  listen 443 ssl; # managed by Certbot
+  ssl_certificate /etc/letsencrypt/live/russab0.tk/fullchain.pem; # managed by Certbot
+  ssl_certificate_key /etc/letsencrypt/live/russab0.tk/privkey.pem; # managed by Certbot
+  include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+  ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+server {
+  server_name russab0.tk;
+  listen [::]:443;
+  listen 443; 
+
+  return 301 http://www.$host$request_uri;
+}
+
+
